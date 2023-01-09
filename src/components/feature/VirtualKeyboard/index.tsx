@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import Key from "./Key";
+import KeyEncoder from "./KeyEncoder";
 import keyArray, { specialKeyArray, specialKeyWidth } from "./Static";
 
 const Style = {
@@ -18,16 +19,25 @@ const Style = {
   `,
 };
 
-export default function VirtualKeyboard() {
+type Props = {
+  typeAmount: number;
+  setTypeAmount: React.Dispatch<SetStateAction<number>>;
+};
+
+export default function VirtualKeyboard({ typeAmount, setTypeAmount }: Props) {
   const [currentKey, setCurrentKey] = useState<string>("");
 
   useEffect(() => {
     window.addEventListener("keydown", (event) => {
-      setCurrentKey(event.key);
+      setCurrentKey(event.code);
     });
 
-    window.addEventListener("keyup", () => {
+    window.addEventListener("keyup", (event) => {
       setCurrentKey("");
+      if (event.code === "Enter") setTypeAmount(0);
+      else if (event.code === "Backspace")
+        setTypeAmount((current) => (current -= 1));
+      else setTypeAmount((current) => (current += 1));
     });
   }, []);
 
@@ -43,7 +53,7 @@ export default function VirtualKeyboard() {
                     key={Math.random()}
                     word="Space"
                     width={specialKeyWidth[specialKeyArray.indexOf(" ")]}
-                    isClicked={" " === currentKey}
+                    isClicked={KeyEncoder(key) === currentKey}
                   />
                 );
               if (specialKeyArray.includes(key))
@@ -52,7 +62,7 @@ export default function VirtualKeyboard() {
                     key={Math.random()}
                     word={key}
                     width={specialKeyWidth[specialKeyArray.indexOf(key)]}
-                    isClicked={key === currentKey}
+                    isClicked={KeyEncoder(key) === currentKey}
                   />
                 );
               return (
@@ -60,7 +70,7 @@ export default function VirtualKeyboard() {
                   key={Math.random()}
                   word={key}
                   width={60}
-                  isClicked={key.toLowerCase() === currentKey.toLowerCase()}
+                  isClicked={KeyEncoder(key) === currentKey}
                 />
               );
             })}

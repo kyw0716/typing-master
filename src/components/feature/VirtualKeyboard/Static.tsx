@@ -21,7 +21,7 @@ const keyArray: string[][] = [
   [" "],
 ];
 
-export const specialKeyWidth = [120, 90, 90, 120, 125, 155, 360];
+export const specialKeyWidth = [120, 90, 90, 120, 125, 155, 480];
 
 export const specialKeyArray = [
   "Backspace",
