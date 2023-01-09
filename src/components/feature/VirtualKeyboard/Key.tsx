@@ -3,7 +3,6 @@ import styled from "styled-components";
 type Props = {
   word: string;
   width: number;
-  height: number;
   isClicked: boolean;
 };
 
@@ -20,12 +19,12 @@ const Style = {
   `,
 };
 
-export default function Key({ word, width, height, isClicked }: Props) {
+export default function Key({ word, width, isClicked }: Props) {
   return (
     <Style.Wrapper
       style={{
         width: width,
-        height: height,
+        height: 60,
         backgroundColor: isClicked ? "lightgrey" : "black",
         color: isClicked ? "black" : "white",
       }}
