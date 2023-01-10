@@ -12,8 +12,8 @@ const Style = {
   ResultViewer: styled.div`
     width: 180px;
     height: 60px;
-    border: 4px solid lightgrey;
-    border-radius: 10px;
+    /* border: 4px solid lightgrey;
+    border-radius: 10px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +88,7 @@ export default function TypingCalculator({
   return (
     <Style.ResultWrapper>
       <Style.ResultViewer>속도: {typeSpeed}</Style.ResultViewer>
-      <Style.ResultViewer>정확도: {typeAccuracy}</Style.ResultViewer>
+      <Style.ResultViewer>정확도: {typeAccuracy} %</Style.ResultViewer>
     </Style.ResultWrapper>
   );
 }

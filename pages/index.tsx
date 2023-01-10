@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import SentenceTyping from "../src/components/feature/SentenceTyping";
-import { KoreanNationalAnthem } from "../src/components/feature/SentenceTyping/Static";
+import { KoreanNationalAnthem } from "../src/components/share/Sentences";
 import VirtualKeyboard from "../src/components/feature/VirtualKeyboard";
 
 const Style = {
@@ -19,6 +19,7 @@ const Style = {
 
 export default function Test() {
   const [typeAmount, setTypeAmount] = useState<number>(0);
+
   return (
     <Style.Wrapper>
       <SentenceTyping
