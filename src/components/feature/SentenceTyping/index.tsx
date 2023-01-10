@@ -23,6 +23,8 @@ const Style = {
     border: none;
     border-bottom: 2px solid lightgrey;
     font-size: 20px;
+    background-color: #2a2a2a;
+    color: lightgrey;
   `,
   ResultWrapper: styled.div`
     width: 100vw;
