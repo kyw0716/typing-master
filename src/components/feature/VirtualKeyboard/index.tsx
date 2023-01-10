@@ -20,11 +20,10 @@ const Style = {
 };
 
 type Props = {
-  typeAmount: number;
   setTypeAmount: React.Dispatch<SetStateAction<number>>;
 };
 
-export default function VirtualKeyboard({ typeAmount, setTypeAmount }: Props) {
+export default function VirtualKeyboard({ setTypeAmount }: Props) {
   const [currentKey, setCurrentKey] = useState<string>("");
 
   useEffect(() => {

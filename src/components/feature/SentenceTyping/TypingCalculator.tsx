@@ -1,12 +1,42 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
+import styled from "styled-components";
+
+const Style = {
+  ResultWrapper: styled.div`
+    width: 100vw;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  `,
+  ResultViewer: styled.div`
+    width: 180px;
+    height: 60px;
+    border: 4px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
+  `,
+};
 
 type Props = {
   answer: string;
   input: string;
   typeAmount: number;
+  setAllTypeSpeed: React.Dispatch<SetStateAction<number[]>>;
+  setAllTypeAccuracy: React.Dispatch<SetStateAction<number[]>>;
 };
 
-export default function TypingCalculator({ answer, input, typeAmount }: Props) {
+export default function TypingCalculator({
+  answer,
+  input,
+  typeAmount,
+  setAllTypeSpeed,
+  setAllTypeAccuracy,
+}: Props) {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [typeSpeed, setTypeSpeed] = useState<number>(0);
   const [typeAccuracy, setTypeAccuracy] = useState<number>(0);
@@ -27,18 +57,21 @@ export default function TypingCalculator({ answer, input, typeAmount }: Props) {
       setInterv(
         setInterval(() => {
           setCurrentTime((current) => (current += 1));
-        }, 100)
+        }, 1000)
       );
     } else clearInterval(interv);
   }, [isTypingStart]);
 
   useEffect(() => {
     setCurrentTime(0);
+
+    setAllTypeSpeed((current) => [...current, typeSpeed]);
+    setAllTypeAccuracy((current) => [...current, typeAccuracy]);
   }, [answer]);
 
   useEffect(() => {
     if (currentTime !== 0 && typeAmount !== 0)
-      setTypeSpeed(Math.floor((typeAmount / currentTime) * 600));
+      setTypeSpeed(Math.floor((typeAmount / currentTime) * 60));
   }, [currentTime, typeAmount]);
 
   useEffect(() => {
@@ -53,8 +86,9 @@ export default function TypingCalculator({ answer, input, typeAmount }: Props) {
   }, [input]);
 
   return (
-    <>
-      속도: {typeSpeed} 정확도: {typeAccuracy}
-    </>
+    <Style.ResultWrapper>
+      <Style.ResultViewer>속도: {typeSpeed}</Style.ResultViewer>
+      <Style.ResultViewer>정확도: {typeAccuracy}</Style.ResultViewer>
+    </Style.ResultWrapper>
   );
 }

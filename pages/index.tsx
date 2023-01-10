@@ -25,7 +25,7 @@ export default function Test() {
         sentenceArray={KoreanNationalAnthem}
         typeAmount={typeAmount}
       />
-      <VirtualKeyboard typeAmount={typeAmount} setTypeAmount={setTypeAmount} />
+      <VirtualKeyboard setTypeAmount={setTypeAmount} />
     </Style.Wrapper>
   );
 }
