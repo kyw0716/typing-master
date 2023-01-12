@@ -3,6 +3,8 @@ import styled from "styled-components";
 import SentenceTyping from "../src/components/feature/SentenceTyping";
 import VirtualKeyboard from "../src/components/feature/VirtualKeyboard";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import loadingImage from "../public/loading.gif";
 
 const Style = {
   Wrapper: styled.div`
@@ -24,17 +26,28 @@ export default function Typing() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`/api/select/sentence?index=${router.query.index}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setSentenceArray(data as string[]);
-      });
+    if (!router.query.index) router.push("/");
+    else
+      fetch(`/api/select/sentence?index=${router.query.index}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSentenceArray(data as string[]);
+        });
   }, []);
 
   return (
     <Style.Wrapper>
-      <SentenceTyping sentenceArray={sentenceArray} typeAmount={typeAmount} />
-      <VirtualKeyboard setTypeAmount={setTypeAmount} />
+      {sentenceArray.length > 0 ? (
+        <>
+          <SentenceTyping
+            sentenceArray={sentenceArray}
+            typeAmount={typeAmount}
+          />
+          <VirtualKeyboard setTypeAmount={setTypeAmount} />
+        </>
+      ) : (
+        <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+      )}
     </Style.Wrapper>
   );
 }
