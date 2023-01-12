@@ -12,8 +12,6 @@ const Style = {
   ResultViewer: styled.div`
     width: 180px;
     height: 60px;
-    /* border: 4px solid lightgrey;
-    border-radius: 10px; */
     display: flex;
     justify-content: center;
     align-items: center;

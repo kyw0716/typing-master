@@ -1,8 +1,6 @@
-import { useState } from "react";
 import styled from "styled-components";
-import SentenceTyping from "../src/components/feature/SentenceTyping";
-import { KoreanNationalAnthem } from "../src/components/share/Sentences";
-import VirtualKeyboard from "../src/components/feature/VirtualKeyboard";
+import { useRouter } from "next/router";
+import { SentenceTitle } from "../src/components/share/Sentences";
 
 const Style = {
   Wrapper: styled.div`
@@ -10,23 +8,38 @@ const Style = {
     height: 100vh;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    gap: 40px;
+    gap: 10px;
     justify-content: center;
     align-items: center;
   `,
+  StartTypingButton: styled.button`
+    width: max-content;
+    height: max-content;
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+  `,
 };
 
-export default function Test() {
-  const [typeAmount, setTypeAmount] = useState<number>(0);
+export default function Home() {
+  const router = useRouter();
 
   return (
     <Style.Wrapper>
-      <SentenceTyping
-        sentenceArray={KoreanNationalAnthem}
-        typeAmount={typeAmount}
-      />
-      <VirtualKeyboard setTypeAmount={setTypeAmount} />
+      {SentenceTitle.map((v, i) => (
+        <Style.StartTypingButton
+          key={Math.random()}
+          onClick={() => {
+            router.push(`/typing?index=${i}`, "/typing");
+          }}
+        >
+          {v}
+        </Style.StartTypingButton>
+      ))}
     </Style.Wrapper>
   );
 }
