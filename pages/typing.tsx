@@ -17,11 +17,27 @@ const Style = {
     justify-content: center;
     align-items: center;
   `,
+  HomeButton: styled.div`
+    width: max-content;
+    height: max-content;
+    padding: 15px 20px;
+    background-color: grey;
+    color: lightgrey;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  `,
 };
 
 export default function Typing() {
   const [typeAmount, setTypeAmount] = useState<number>(0);
   const [sentenceArray, setSentenceArray] = useState<string[]>([]);
+  const [sentenceIndex, setSentenceIndex] = useState<number>(0);
 
   const router = useRouter();
 
@@ -42,11 +58,22 @@ export default function Typing() {
           <SentenceTyping
             sentenceArray={sentenceArray}
             typeAmount={typeAmount}
+            sentenceIndex={sentenceIndex}
+            setSentenceIndex={setSentenceIndex}
           />
           <VirtualKeyboard setTypeAmount={setTypeAmount} />
         </>
       ) : (
         <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+      )}
+      {sentenceArray.length === sentenceIndex && (
+        <Style.HomeButton
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          홈으로
+        </Style.HomeButton>
       )}
     </Style.Wrapper>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import TypingCalculator from "./TypingCalculator";
 
@@ -49,11 +49,17 @@ const Style = {
 type Props = {
   sentenceArray: string[];
   typeAmount: number;
+  sentenceIndex: number;
+  setSentenceIndex: React.Dispatch<SetStateAction<number>>;
 };
 
-export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
+export default function SentenceTyping({
+  sentenceArray,
+  typeAmount,
+  sentenceIndex,
+  setSentenceIndex,
+}: Props) {
   const [input, setInput] = useState<string>("");
-  const [index, setIndex] = useState<number>(0);
   const [allTypeSpeed, setAllTypeSpeed] = useState<number[]>([]);
   const [allTypeAccuracy, setAllTypeAccuracy] = useState<number[]>([]);
 
@@ -62,7 +68,7 @@ export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setInput("");
-    setIndex((current) => current + 1);
+    setSentenceIndex((current) => current + 1);
   };
 
   useEffect(() => {
@@ -78,16 +84,18 @@ export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
 
   return (
     <Style.Wrapper onSubmit={(event) => handleSubmit(event)}>
-      {index < sentenceArray.length ? (
+      {sentenceIndex < sentenceArray.length ? (
         <>
           <TypingCalculator
-            answer={sentenceArray[index]}
+            answer={sentenceArray[sentenceIndex]}
             input={input}
             typeAmount={typeAmount}
             setAllTypeSpeed={setAllTypeSpeed}
             setAllTypeAccuracy={setAllTypeAccuracy}
           />
-          <Style.SentenceWrapper>{sentenceArray[index]}</Style.SentenceWrapper>
+          <Style.SentenceWrapper>
+            {sentenceArray[sentenceIndex]}
+          </Style.SentenceWrapper>
           <Style.Input
             value={input}
             onChange={(event) => {
