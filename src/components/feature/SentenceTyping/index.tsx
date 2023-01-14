@@ -49,19 +49,13 @@ const Style = {
 type Props = {
   sentenceArray: string[];
   typeAmount: number;
-  sentenceIndex: number;
-  setSentenceIndex: React.Dispatch<SetStateAction<number>>;
 };
 
-export default function SentenceTyping({
-  sentenceArray,
-  typeAmount,
-  sentenceIndex,
-  setSentenceIndex,
-}: Props) {
+export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
   const [input, setInput] = useState<string>("");
   const [allTypeSpeed, setAllTypeSpeed] = useState<number[]>([]);
   const [allTypeAccuracy, setAllTypeAccuracy] = useState<number[]>([]);
+  const [sentenceIndex, setSentenceIndex] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

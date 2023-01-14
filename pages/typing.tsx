@@ -58,23 +58,19 @@ export default function Typing() {
           <SentenceTyping
             sentenceArray={sentenceArray}
             typeAmount={typeAmount}
-            sentenceIndex={sentenceIndex}
-            setSentenceIndex={setSentenceIndex}
           />
           <VirtualKeyboard setTypeAmount={setTypeAmount} />
         </>
       ) : (
         <Image src={loadingImage} alt={"loading"} width={300} height={300} />
       )}
-      {sentenceArray.length === sentenceIndex && (
-        <Style.HomeButton
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          홈으로
-        </Style.HomeButton>
-      )}
+      <Style.HomeButton
+        onClick={() => {
+          router.push("/");
+        }}
+      >
+        홈으로
+      </Style.HomeButton>
     </Style.Wrapper>
   );
 }
