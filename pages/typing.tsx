@@ -28,7 +28,7 @@ const Style = {
     border-radius: 10px;
     cursor: pointer;
     position: absolute;
-    bottom: 50px;
+    bottom: -10px;
     left: 50%;
     transform: translate(-50%, -50%);
   `,
