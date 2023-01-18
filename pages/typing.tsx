@@ -37,7 +37,6 @@ const Style = {
 export default function Typing() {
   const [typeAmount, setTypeAmount] = useState<number>(0);
   const [sentenceArray, setSentenceArray] = useState<string[]>([]);
-  const [sentenceIndex, setSentenceIndex] = useState<number>(0);
 
   const router = useRouter();
 
