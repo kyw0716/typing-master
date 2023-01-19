@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { SentenceTitle } from "../src/components/share/Sentences";
+import NavBar from "../src/components/layout/NavBar";
+import Layout from "../src/components/layout";
 
 const Style = {
   Wrapper: styled.div`
@@ -11,6 +13,7 @@ const Style = {
     gap: 10px;
     justify-content: center;
     align-items: center;
+    position: relative;
   `,
   StartTypingButton: styled.button`
     width: max-content;
@@ -29,7 +32,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <Style.Wrapper>
+    <Layout>
       {SentenceTitle.map((v, i) => (
         <Style.StartTypingButton
           key={Math.random()}
@@ -40,6 +43,6 @@ export default function Home() {
           {v}
         </Style.StartTypingButton>
       ))}
-    </Style.Wrapper>
+    </Layout>
   );
 }

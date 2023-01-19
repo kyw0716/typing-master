@@ -5,6 +5,7 @@ import VirtualKeyboard from "../src/components/feature/VirtualKeyboard";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import loadingImage from "../public/loading.gif";
+import Layout from "../src/components/layout";
 
 const Style = {
   Wrapper: styled.div`
@@ -51,25 +52,27 @@ export default function Typing() {
   }, []);
 
   return (
-    <Style.Wrapper>
-      {sentenceArray.length > 0 ? (
-        <>
-          <SentenceTyping
-            sentenceArray={sentenceArray}
-            typeAmount={typeAmount}
-          />
-          <VirtualKeyboard setTypeAmount={setTypeAmount} />
-        </>
-      ) : (
-        <Image src={loadingImage} alt={"loading"} width={300} height={300} />
-      )}
-      <Style.HomeButton
-        onClick={() => {
-          router.push("/");
-        }}
-      >
-        홈으로
-      </Style.HomeButton>
-    </Style.Wrapper>
+    <Layout>
+      <Style.Wrapper>
+        {sentenceArray.length > 0 ? (
+          <>
+            <SentenceTyping
+              sentenceArray={sentenceArray}
+              typeAmount={typeAmount}
+            />
+            <VirtualKeyboard setTypeAmount={setTypeAmount} />
+          </>
+        ) : (
+          <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+        )}
+        <Style.HomeButton
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          홈으로
+        </Style.HomeButton>
+      </Style.Wrapper>
+    </Layout>
   );
 }
