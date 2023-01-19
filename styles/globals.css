@@ -89,6 +89,7 @@ body {
   color: white;
   background: black;
   position: relative;
+  font-family: "Ubuntu" !important;
 }
 
 a {
