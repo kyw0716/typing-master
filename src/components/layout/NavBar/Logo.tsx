@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 const LogoDiv = styled.div`
@@ -14,5 +15,15 @@ const LogoDiv = styled.div`
 `;
 
 export default function Logo() {
-  return <LogoDiv>TypingMaster</LogoDiv>;
+  const router = useRouter();
+
+  return (
+    <LogoDiv
+      onClick={() => {
+        router.push("/");
+      }}
+    >
+      TypingMaster
+    </LogoDiv>
+  );
 }

@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import { useRouter } from "next/router";
-import { SentenceTitle } from "../src/components/share/Sentences";
-import Layout from "../src/components/layout";
+import styled from "styled-components";
+import Layout from "../../src/components/layout";
+import { SentenceTitle } from "../../src/components/share/Sentences";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -17,13 +17,12 @@ const Style = {
   `,
 };
 
-export default function Home() {
+export default function TypingList() {
   const router = useRouter();
 
   return (
     <Layout>
-      홈페이지
-      {/* {SentenceTitle.map((v, i) => (
+      {SentenceTitle.map((v, i) => (
         <Style.StartTypingButton
           key={Math.random()}
           onClick={() => {
@@ -32,7 +31,7 @@ export default function Home() {
         >
           {v}
         </Style.StartTypingButton>
-      ))} */}
+      ))}
     </Layout>
   );
 }

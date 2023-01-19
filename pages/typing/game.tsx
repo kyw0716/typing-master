@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import SentenceTyping from "../src/components/feature/SentenceTyping";
-import VirtualKeyboard from "../src/components/feature/VirtualKeyboard";
+import SentenceTyping from "../../src/components/feature/SentenceTyping";
+import VirtualKeyboard from "../../src/components/feature/VirtualKeyboard";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import loadingImage from "../public/loading.gif";
-import Layout from "../src/components/layout";
+import loadingImage from "../../public/loading.gif";
+import Layout from "../../src/components/layout";
 
 const Style = {
   Wrapper: styled.div`
@@ -35,7 +35,7 @@ const Style = {
   `,
 };
 
-export default function Typing() {
+export default function TypingGame() {
   const [typeAmount, setTypeAmount] = useState<number>(0);
   const [sentenceArray, setSentenceArray] = useState<string[]>([]);
 
@@ -65,13 +65,6 @@ export default function Typing() {
         ) : (
           <Image src={loadingImage} alt={"loading"} width={300} height={300} />
         )}
-        <Style.HomeButton
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          홈으로
-        </Style.HomeButton>
       </Style.Wrapper>
     </Layout>
   );

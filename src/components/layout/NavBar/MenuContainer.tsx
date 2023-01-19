@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { AddIcon, HomeIcon, KeyBoardIcon } from "../../share/Svg";
 
@@ -27,12 +28,22 @@ const Style = {
 };
 
 export default function MenuContainer() {
+  const router = useRouter();
+
   return (
     <Style.Wrapper>
-      <Style.Menu>
+      <Style.Menu
+        onClick={() => {
+          router.push("/");
+        }}
+      >
         <HomeIcon />홈
       </Style.Menu>
-      <Style.Menu>
+      <Style.Menu
+        onClick={() => {
+          router.push("/typing/list", "/typing");
+        }}
+      >
         <KeyBoardIcon /> 시작하기
       </Style.Menu>
       <Style.Menu>

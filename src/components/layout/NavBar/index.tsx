@@ -16,6 +16,7 @@ const Style = {
     display: flex;
     flex-direction: column;
     padding-left: 12px;
+    background-color: black;
   `,
   Logo: styled.div`
     width: 220px;

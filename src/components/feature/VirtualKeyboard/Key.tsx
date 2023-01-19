@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -16,17 +17,29 @@ const Style = {
     color: lightgrey;
     font-weight: bold;
     box-sizing: border-box;
+    cursor: pointer;
   `,
 };
 
 export default function Key({ word, width, isClicked }: Props) {
+  const [isDirectClicked, setisDirectClicked] = useState<boolean>(false);
+
   return (
     <Style.Wrapper
+      onMouseDown={() => {
+        setisDirectClicked(true);
+      }}
+      onMouseUp={() => {
+        setisDirectClicked(false);
+      }}
+      onMouseLeave={() => {
+        setisDirectClicked(false);
+      }}
       style={{
         width: width,
         height: 60,
-        backgroundColor: isClicked ? "lightgrey" : "black",
-        color: isClicked ? "black" : "white",
+        backgroundColor: isClicked || isDirectClicked ? "lightgrey" : "black",
+        color: isClicked || isDirectClicked ? "black" : "white",
       }}
     >
       {word}
