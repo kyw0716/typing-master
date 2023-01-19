@@ -46,10 +46,18 @@ export default function MenuContainer() {
       >
         <KeyBoardIcon /> 시작하기
       </Style.Menu>
-      <Style.Menu>
+      <Style.Menu
+        onClick={() => {
+          alert("아직 개발중입니당");
+        }}
+      >
         <AddIcon /> 추가하기
       </Style.Menu>
-      <Style.Menu>
+      <Style.Menu
+        onClick={() => {
+          alert("아직 개발중입니당");
+        }}
+      >
         <Image
           src={
             "https://avatars.githubusercontent.com/u/77326660?s=80&u=9b4ee6d7178e3ef1dc2a79703c3e865a0297cdbe&v=4"
