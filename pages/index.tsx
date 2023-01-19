@@ -18,21 +18,5 @@ const Style = {
 };
 
 export default function Home() {
-  const router = useRouter();
-
-  return (
-    <Layout>
-      홈페이지
-      {/* {SentenceTitle.map((v, i) => (
-        <Style.StartTypingButton
-          key={Math.random()}
-          onClick={() => {
-            router.push(`/typing/game?index=${i}`, "/typing");
-          }}
-        >
-          {v}
-        </Style.StartTypingButton>
-      ))} */}
-    </Layout>
-  );
+  return <Layout>홈페이지</Layout>;
 }

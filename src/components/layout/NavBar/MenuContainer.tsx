@@ -41,7 +41,7 @@ export default function MenuContainer() {
       </Style.Menu>
       <Style.Menu
         onClick={() => {
-          router.push("/typing/list", "/typing");
+          router.push("/typing/list");
         }}
       >
         <KeyBoardIcon /> 시작하기

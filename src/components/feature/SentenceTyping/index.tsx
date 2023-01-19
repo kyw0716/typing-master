@@ -61,6 +61,9 @@ export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (input.length === 0) return;
+
     setInput("");
     setSentenceIndex((current) => current + 1);
   };

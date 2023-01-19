@@ -77,7 +77,7 @@ export default function TypingCalculator({
       setTypeAccuracy(
         Math.floor(
           (answerArray.filter((v, i) => v === inputArray[i]).length /
-            input.length) *
+            answerArray.length) *
             100
         )
       );

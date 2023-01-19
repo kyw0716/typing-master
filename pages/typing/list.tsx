@@ -26,7 +26,7 @@ export default function TypingList() {
         <Style.StartTypingButton
           key={Math.random()}
           onClick={() => {
-            router.push(`/typing/game?index=${i}`, "/typing");
+            router.push(`/typing/game?index=${i}`, "/typing/game");
           }}
         >
           {v}
