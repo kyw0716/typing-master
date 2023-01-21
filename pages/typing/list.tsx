@@ -22,7 +22,11 @@ export default function TypingList() {
   const [names, setNames] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("/api/select/sentence?dataType=name")
+    fetch("/api/select/sentence?dataType=name", {
+      headers: {
+        Accept: "application/json",
+      },
+    })
       .then((res) => {
         return res.json();
       })

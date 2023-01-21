@@ -44,7 +44,11 @@ export default function TypingGame() {
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
-      fetch(`/api/select/sentence?dataType=${router.query.name}`)
+      fetch(`/api/select/sentence?dataType=${router.query.name}`, {
+        headers: {
+          Accept: "application/json",
+        },
+      })
         .then((response) => response.json())
         .then((data) => {
           setSentenceArray(data as string[]);
