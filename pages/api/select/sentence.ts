@@ -1,9 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Sentences } from "../../../src/components/share/Sentences";
+import { getFirestoreDocData } from "../../../src/lib/firebaseUtils";
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<string[]>
+  res: NextApiResponse<string | {}>
 ) {
-  res.status(200).json(Sentences[parseInt(req.query.index as string, 10)]);
+  const sentences = await getFirestoreDocData("sentence", "sample");
+  const dataType = req.query.dataType as string;
+
+  if (sentences === undefined) return res.status(404).json("not-found");
+  if (dataType === "name") return res.status(200).json(Object.keys(sentences));
+  if (dataType === undefined) return res.status(200).json(sentences);
+  return res.status(200).json(sentences[dataType]);
 }

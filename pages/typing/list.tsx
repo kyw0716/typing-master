@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../src/components/layout";
-import { SentenceTitle } from "../../src/components/share/Sentences";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -19,14 +19,25 @@ const Style = {
 
 export default function TypingList() {
   const router = useRouter();
+  const [names, setNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/select/sentence?dataType=name")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setNames(data as string[]);
+      });
+  }, []);
 
   return (
     <Layout>
-      {SentenceTitle.map((v, i) => (
+      {names.map((v) => (
         <Style.StartTypingButton
           key={Math.random()}
           onClick={() => {
-            router.push(`/typing/game?index=${i}`, "/typing/game");
+            router.push(`/typing/game?name=${v}`, "/typing/game");
           }}
         >
           {v}

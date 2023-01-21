@@ -108,7 +108,7 @@ export const KeyBoardIcon = () => {
       fill="#ffffff"
       stroke="#ffffff"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"
@@ -172,7 +172,7 @@ export const AddIcon = () => {
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
         strokeWidth="2"
         x1="12.003"
         x2="12.003"

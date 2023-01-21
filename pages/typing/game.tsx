@@ -42,9 +42,9 @@ export default function TypingGame() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.query.index) router.push("/");
+    if (!router.query.name) router.push("/");
     else
-      fetch(`/api/select/sentence?index=${router.query.index}`)
+      fetch(`/api/select/sentence?dataType=${router.query.name}`)
         .then((response) => response.json())
         .then((data) => {
           setSentenceArray(data as string[]);

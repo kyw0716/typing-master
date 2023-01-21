@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth, GithubAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 export const FirebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -16,4 +17,5 @@ export const FIREBASE_APP = !getApps().length
   : getApp();
 
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
+export const FIREBASE_DB = getFirestore(FIREBASE_APP);
 export const getGithubAuthProvider = () => new GithubAuthProvider();
