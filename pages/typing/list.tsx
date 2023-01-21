@@ -23,7 +23,10 @@ export default function TypingList() {
   const [names, setNames] = useState<string[]>([]);
 
   useEffect(() => {
-    axios.get("/api/select/sentence?dataType=name").then((res) => {
+    axios({
+      method: "GET",
+      url: "/api/select/sentence?dataType=name",
+    }).then((res) => {
       setNames(res.data as string[]);
     });
   }, []);

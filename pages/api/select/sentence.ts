@@ -8,8 +8,10 @@ export default async function handler(
   const sentences = await getFirestoreDocData("sentence", "sample");
   const dataType = req.query.dataType as string;
 
-  if (sentences === undefined) return res.status(404).json("not-found");
-  if (dataType === "name") return res.status(200).json(Object.keys(sentences));
-  if (dataType === undefined) return res.status(200).json(sentences);
-  return res.status(200).json(sentences[dataType]);
+  if (req.method === "GET") {
+    if (dataType === "name")
+      return res.status(200).json(Object.keys(sentences));
+    if (dataType === undefined) return res.status(200).json(sentences);
+    return res.status(200).json(sentences[dataType]);
+  }
 }

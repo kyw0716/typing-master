@@ -45,8 +45,10 @@ export default function TypingGame() {
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
-      axios
-        .get(`/api/select/sentence?dataType=${router.query.name}`)
+      axios({
+        method: "GET",
+        url: `/api/select/sentence?dataType=${router.query.name}`,
+      })
         .then((res) => setSentenceArray(res.data as string[]))
         .catch((error) => alert(error));
   }, []);
