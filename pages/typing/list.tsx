@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../src/components/layout";
+import axios from "axios";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -22,17 +23,9 @@ export default function TypingList() {
   const [names, setNames] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("/api/select/sentence?dataType=name", {
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setNames(data as string[]);
-      });
+    axios.get("/api/select/sentence?dataType=name").then((res) => {
+      setNames(res.data as string[]);
+    });
   }, []);
 
   return (

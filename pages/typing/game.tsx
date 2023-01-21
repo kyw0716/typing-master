@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
+import axios from "axios";
 
 const Style = {
   Wrapper: styled.div`
@@ -44,15 +45,10 @@ export default function TypingGame() {
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
-      fetch(`/api/select/sentence?dataType=${router.query.name}`, {
-        headers: {
-          Accept: "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setSentenceArray(data as string[]);
-        });
+      axios
+        .get(`/api/select/sentence?dataType=${router.query.name}`)
+        .then((res) => setSentenceArray(res.data as string[]))
+        .catch((error) => alert(error));
   }, []);
 
   return (
