@@ -3,7 +3,7 @@ import { getFirestoreDocData } from "../../../src/lib/firebaseUtils";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<string | {}>
+  res: NextApiResponse
 ) {
   const sentences = await getFirestoreDocData("sentence", "sample");
   const dataType = req.query.dataType as string;
