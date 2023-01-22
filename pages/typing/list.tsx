@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../src/components/layout";
-import axios from "axios";
+import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -23,11 +23,8 @@ export default function TypingList() {
   const [names, setNames] = useState<string[]>([]);
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: "/api/select/sentence?dataType=name",
-    }).then((res) => {
-      setNames(res.data as string[]);
+    getFirestoreDocData("sentence", "sample").then((data) => {
+      setNames(Object.keys(data));
     });
   }, []);
 

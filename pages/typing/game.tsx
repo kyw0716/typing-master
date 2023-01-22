@@ -7,6 +7,7 @@ import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
 import axios from "axios";
+import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 
 const Style = {
   Wrapper: styled.div`
@@ -45,12 +46,9 @@ export default function TypingGame() {
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
-      axios({
-        method: "GET",
-        url: `/api/select/sentence?dataType=${router.query.name}`,
-      })
-        .then((res) => setSentenceArray(res.data as string[]))
-        .catch((error) => alert(error));
+      getFirestoreDocData("sentence", "sample").then((data) => {
+        setSentenceArray((data as any)[router.query.name as string]);
+      });
   }, []);
 
   return (
