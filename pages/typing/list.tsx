@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Layout from "../../src/components/layout";
 import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 import loadingImage from "../../public/loading.gif";
+import axios from "axios";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -24,9 +25,18 @@ export default function TypingList() {
   const router = useRouter();
   const [names, setNames] = useState<string[]>([]);
 
+  // useEffect(() => {
+  //   getFirestoreDocData("sentence", "sample").then((data) => {
+  //     setNames(Object.keys(data));
+  //   });
+  // }, []);
+
   useEffect(() => {
-    getFirestoreDocData("sentence", "sample").then((data) => {
-      setNames(Object.keys(data));
+    axios({
+      method: "GET",
+      url: "/api/select/sentence?dataType=name",
+    }).then((res) => {
+      setNames(res.data as string[]);
     });
   }, []);
 

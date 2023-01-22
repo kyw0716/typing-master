@@ -7,6 +7,7 @@ import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
 import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
+import axios from "axios";
 
 const Style = {
   Wrapper: styled.div`
@@ -42,12 +43,23 @@ export default function TypingGame() {
 
   const router = useRouter();
 
+  // useEffect(() => {
+  //   if (!router.query.name) router.push("/");
+  //   else
+  //     getFirestoreDocData("sentence", "sample").then((data) => {
+  //       setSentenceArray(data[router.query.name as string]);
+  //     });
+  // }, []);
+
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
-      getFirestoreDocData("sentence", "sample").then((data) => {
-        setSentenceArray(data[router.query.name as string]);
-      });
+      axios({
+        method: "GET",
+        url: `/api/select/sentence?dataType=${router.query.name}`,
+      })
+        .then((res) => setSentenceArray(res.data as string[]))
+        .catch((error) => alert(error));
   }, []);
 
   return (
