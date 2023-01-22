@@ -25,12 +25,6 @@ export default function TypingList() {
   const router = useRouter();
   const [names, setNames] = useState<string[]>([]);
 
-  // useEffect(() => {
-  //   getFirestoreDocData("sentence", "sample").then((data) => {
-  //     setNames(Object.keys(data));
-  //   });
-  // }, []);
-
   useEffect(() => {
     axios({
       method: "GET",

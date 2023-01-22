@@ -43,14 +43,6 @@ export default function TypingGame() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!router.query.name) router.push("/");
-  //   else
-  //     getFirestoreDocData("sentence", "sample").then((data) => {
-  //       setSentenceArray(data[router.query.name as string]);
-  //     });
-  // }, []);
-
   useEffect(() => {
     if (!router.query.name) router.push("/");
     else
