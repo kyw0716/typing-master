@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
-import axios from "axios";
 import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 
 const Style = {
@@ -47,7 +46,7 @@ export default function TypingGame() {
     if (!router.query.name) router.push("/");
     else
       getFirestoreDocData("sentence", "sample").then((data) => {
-        setSentenceArray((data as any)[router.query.name as string]);
+        setSentenceArray(data[router.query.name as string]);
       });
   }, []);
 

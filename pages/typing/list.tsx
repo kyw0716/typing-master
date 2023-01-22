@@ -1,8 +1,10 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../src/components/layout";
 import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
+import loadingImage from "../../public/loading.gif";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -30,16 +32,22 @@ export default function TypingList() {
 
   return (
     <Layout>
-      {names.map((v) => (
-        <Style.StartTypingButton
-          key={Math.random()}
-          onClick={() => {
-            router.push(`/typing/game?name=${v}`, "/typing/game");
-          }}
-        >
-          {v}
-        </Style.StartTypingButton>
-      ))}
+      {names.length > 0 ? (
+        <>
+          {names.map((v) => (
+            <Style.StartTypingButton
+              key={Math.random()}
+              onClick={() => {
+                router.push(`/typing/game?name=${v}`, "/typing/game");
+              }}
+            >
+              {v}
+            </Style.StartTypingButton>
+          ))}
+        </>
+      ) : (
+        <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+      )}
     </Layout>
   );
 }
