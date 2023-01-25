@@ -103,7 +103,7 @@ export default function Add() {
           );
         })
         .catch((error) => {
-          console.log(error);
+          alert(error.response.data);
         });
     if (title.length > 0) setIsTitleExist(true);
   };

@@ -1,7 +1,11 @@
+import { signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import styled from "styled-components";
-import { AddIcon, HomeIcon, KeyBoardIcon } from "../../share/Svg";
+import { FIREBASE_AUTH, getGithubAuthProvider } from "../../../../Firebase";
+import { userContext } from "../../../../pages/_app";
+import { AddIcon, GithubIcon, HomeIcon, KeyBoardIcon } from "../../share/Svg";
 
 const Style = {
   Wrapper: styled.div`
@@ -29,6 +33,11 @@ const Style = {
 
 export default function MenuContainer() {
   const router = useRouter();
+  const login = async () => {
+    await signInWithPopup(FIREBASE_AUTH, getGithubAuthProvider());
+  };
+
+  const user = useContext(userContext);
 
   return (
     <Style.Wrapper>
@@ -55,19 +64,23 @@ export default function MenuContainer() {
       </Style.Menu>
       <Style.Menu
         onClick={() => {
-          alert("아직 개발중입니당");
+          user ? router.push("/myPage") : login();
         }}
       >
-        <Image
-          src={
-            "https://avatars.githubusercontent.com/u/77326660?s=80&u=9b4ee6d7178e3ef1dc2a79703c3e865a0297cdbe&v=4"
-          }
-          alt="profile"
-          width={24}
-          height={24}
-          style={{ borderRadius: "50%" }}
-        />
-        프로필
+        {user ? (
+          <Image
+            src={user.photoURL as string}
+            alt="profile"
+            width={24}
+            height={24}
+            style={{
+              borderRadius: "50%",
+            }}
+          />
+        ) : (
+          <GithubIcon />
+        )}
+        {user ? "프로필" : "로그인"}
       </Style.Menu>
     </Style.Wrapper>
   );
