@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../Firebase";
 
 export const getFirestoreDocData = async (document: string, field: string) => {
@@ -7,4 +7,20 @@ export const getFirestoreDocData = async (document: string, field: string) => {
 
   if (docSnap.exists()) return docSnap.data();
   return new Error("empty");
+};
+
+export const addSentenceToFirestore = async (
+  creator: string,
+  title: string,
+  content: string[]
+) => {
+  const docRef = doc(FIREBASE_DB, "sentence", "forTyping");
+
+  await updateDoc(docRef, {
+    content: arrayUnion({
+      creator: creator,
+      title: title,
+      content: content,
+    }),
+  });
 };
