@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
-import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 import axios from "axios";
 
 const Style = {
@@ -37,6 +36,12 @@ const Style = {
   `,
 };
 
+type Sentence = {
+  creator: string;
+  content: string[];
+  title: string;
+};
+
 export default function TypingGame() {
   const [typeAmount, setTypeAmount] = useState<number>(0);
   const [sentenceArray, setSentenceArray] = useState<string[]>([]);
@@ -48,9 +53,15 @@ export default function TypingGame() {
     else
       axios({
         method: "GET",
-        url: `/api/select/sentence?dataType=${router.query.name}`,
+        url: `/api/select/sentence`,
       })
-        .then((res) => setSentenceArray(res.data as string[]))
+        .then((res) => {
+          setSentenceArray(
+            (res.data as Sentence[]).filter(
+              (v) => v.title === router.query.name
+            )[0].content
+          );
+        })
         .catch((error) => alert(error));
   }, []);
 
@@ -66,7 +77,13 @@ export default function TypingGame() {
             <VirtualKeyboard setTypeAmount={setTypeAmount} />
           </>
         ) : (
-          <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+          <Image
+            src={loadingImage}
+            alt={"loading"}
+            width={300}
+            height={300}
+            priority
+          />
         )}
       </Style.Wrapper>
     </Layout>

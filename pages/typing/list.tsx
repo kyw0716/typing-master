@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../src/components/layout";
-import { getFirestoreDocData } from "../../src/lib/firebaseUtils";
 import loadingImage from "../../public/loading.gif";
 import axios from "axios";
 
@@ -21,36 +20,48 @@ const Style = {
   `,
 };
 
+type Sentence = {
+  creator: string;
+  content: string[];
+  title: string;
+};
+
 export default function TypingList() {
   const router = useRouter();
-  const [names, setNames] = useState<string[]>([]);
+  const [sentence, setSentence] = useState<Sentence[]>([]);
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: "/api/select/sentence?dataType=name",
+      url: "/api/select/sentence",
     }).then((res) => {
-      setNames(res.data as string[]);
+      setSentence(res.data as Sentence[]);
     });
   }, []);
 
   return (
     <Layout>
-      {names.length > 0 ? (
+      {sentence.length > 0 ? (
         <>
-          {names.map((v) => (
+          {sentence.map((v) => (
             <Style.StartTypingButton
               key={Math.random()}
               onClick={() => {
-                router.push(`/typing/game?name=${v}`, "/typing/game");
+                router.push(`/typing/game?name=${v.title}`, "/typing/game");
               }}
             >
-              {v}
+              {v.title}
             </Style.StartTypingButton>
           ))}
         </>
       ) : (
-        <Image src={loadingImage} alt={"loading"} width={300} height={300} />
+        <Image
+          src={loadingImage}
+          alt={"loading"}
+          width={300}
+          height={300}
+          priority
+        />
       )}
     </Layout>
   );

@@ -77,6 +77,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: "Ubuntu" !important;
 }
 
 html,
@@ -89,7 +90,6 @@ body {
   color: white;
   background: black;
   position: relative;
-  font-family: "Ubuntu" !important;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

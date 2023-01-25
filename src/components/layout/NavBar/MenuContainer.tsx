@@ -48,7 +48,7 @@ export default function MenuContainer() {
       </Style.Menu>
       <Style.Menu
         onClick={() => {
-          alert("아직 개발중입니당");
+          router.push("/add");
         }}
       >
         <AddIcon /> 추가하기
