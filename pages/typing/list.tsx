@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Layout from "../../src/components/layout";
 import loadingImage from "../../public/loading.gif";
 import axios from "axios";
+import { Sentence } from "../../src/backend/dto";
 
 const Style = {
   StartTypingButton: styled.button`
@@ -18,12 +19,6 @@ const Style = {
     font-weight: bold;
     cursor: pointer;
   `,
-};
-
-type Sentence = {
-  creator: string;
-  content: string[];
-  title: string;
 };
 
 export default function TypingList() {

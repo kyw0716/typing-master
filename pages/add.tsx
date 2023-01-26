@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { FIREBASE_AUTH } from "../Firebase";
 import Layout from "../src/components/layout";
+import { makeSentenceData } from "../src/lib/utils";
 
 const Style = {
   Wrapper: styled.form`
@@ -81,32 +81,30 @@ export default function Add() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const data = makeSentenceData(title, content);
 
     if (content.length > 0)
       axios(`/api/addSentence`, {
         method: "POST",
-        data: {
-          title: title,
-          content: content,
-          creator: FIREBASE_AUTH.currentUser?.displayName,
-          uid: FIREBASE_AUTH.currentUser?.uid,
-        },
+        data: data,
       })
         .then(() => {
-          setTitle("");
-          setContent([]);
-
-          if (textAreaRef.current)
-            (textAreaRef.current as HTMLTextAreaElement).value = "";
-
-          alert(
-            "등록이 완료되었습니다. 메뉴의 시작하기로 들어가서 확인해보세요!"
-          );
+          handleAfterRequest();
         })
         .catch((error) => {
           alert(error.response.data);
         });
     if (title.length > 0) setIsTitleExist(true);
+  };
+
+  const handleAfterRequest = () => {
+    setTitle("");
+    setContent([]);
+
+    if (textAreaRef.current)
+      (textAreaRef.current as HTMLTextAreaElement).value = "";
+
+    alert("등록이 완료되었습니다. 메뉴의 시작하기로 들어가서 확인해보세요!");
   };
 
   return (

@@ -7,6 +7,7 @@ import Image from "next/image";
 import loadingImage from "../../public/loading.gif";
 import Layout from "../../src/components/layout";
 import axios from "axios";
+import { Sentence } from "../../src/backend/dto";
 
 const Style = {
   Wrapper: styled.div`
@@ -34,12 +35,6 @@ const Style = {
     left: 50%;
     transform: translate(-50%, -50%);
   `,
-};
-
-type Sentence = {
-  creator: string;
-  content: string[];
-  title: string;
 };
 
 export default function TypingGame() {

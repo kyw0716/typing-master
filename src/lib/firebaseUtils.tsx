@@ -1,5 +1,6 @@
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../Firebase";
+import { Sentence } from "../backend/dto";
 
 export const getFirestoreDocData = async (document: string, field: string) => {
   const docRef = doc(FIREBASE_DB, document, field);
@@ -19,12 +20,14 @@ export const addSentenceToFirestore = async (
 
   console.log(uid);
 
+  const data: Sentence = {
+    creator: creator,
+    title: title,
+    content: content,
+    uid: uid,
+  };
+
   await updateDoc(docRef, {
-    content: arrayUnion({
-      creator: creator,
-      title: title,
-      content: content,
-      uid: uid,
-    }),
+    content: arrayUnion(data),
   });
 };
