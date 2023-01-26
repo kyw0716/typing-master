@@ -12,15 +12,19 @@ export const getFirestoreDocData = async (document: string, field: string) => {
 export const addSentenceToFirestore = async (
   creator: string,
   title: string,
-  content: string[]
+  content: string[],
+  uid: string
 ) => {
   const docRef = doc(FIREBASE_DB, "sentence", "forTyping");
+
+  console.log(uid);
 
   await updateDoc(docRef, {
     content: arrayUnion({
       creator: creator,
       title: title,
       content: content,
+      uid: uid,
     }),
   });
 };

@@ -89,6 +89,7 @@ export default function Add() {
           title: title,
           content: content,
           creator: FIREBASE_AUTH.currentUser?.displayName,
+          uid: FIREBASE_AUTH.currentUser?.uid,
         },
       })
         .then(() => {
