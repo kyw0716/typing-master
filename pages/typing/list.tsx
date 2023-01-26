@@ -42,7 +42,10 @@ export default function TypingList() {
             <Style.StartTypingButton
               key={Math.random()}
               onClick={() => {
-                router.push(`/typing/game?name=${v.title}`, "/typing/game");
+                router.push(
+                  `/typing/game?sentenceId=${v.sentenceId}`,
+                  "/typing/game"
+                );
               }}
             >
               {v.title}

@@ -44,7 +44,7 @@ export default function TypingGame() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.query.name) router.push("/");
+    if (!router.query.sentenceId) router.push("/");
     else
       axios({
         method: "GET",
@@ -53,7 +53,7 @@ export default function TypingGame() {
         .then((res) => {
           setSentenceArray(
             (res.data as Sentence[]).filter(
-              (v) => v.title === router.query.name
+              (v) => v.sentenceId === router.query.sentenceId
             )[0].content
           );
         })

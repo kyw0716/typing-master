@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { v4 } from "uuid";
 import Layout from "../src/components/layout";
 import { makeSentenceData } from "../src/lib/utils";
 
@@ -81,7 +82,7 @@ export default function Add() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = makeSentenceData(title, content);
+    const data = makeSentenceData(title, content, v4());
 
     if (content.length > 0)
       axios(`/api/addSentence`, {

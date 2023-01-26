@@ -3,4 +3,13 @@ export type Sentence = {
   title: string;
   content: string[];
   uid: string;
+  sentenceId: string;
+};
+
+export type Record = {
+  title: string;
+  accuray: string;
+  speed: string;
+  sentenceId: string;
+  uid: string;
 };
