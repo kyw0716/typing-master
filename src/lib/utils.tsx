@@ -6,18 +6,11 @@ export const makeSentenceData = (
   content: string[],
   sentenceId: string
 ) => {
-  const displayName = FIREBASE_AUTH.currentUser?.displayName
-    ? FIREBASE_AUTH.currentUser?.displayName
-    : "";
-  const uid = FIREBASE_AUTH.currentUser?.uid
-    ? FIREBASE_AUTH.currentUser?.uid
-    : "";
-
   const data: Sentence = {
     title: title,
     content: content,
-    creator: displayName,
-    uid: uid,
+    creator: `${FIREBASE_AUTH.currentUser?.displayName}`,
+    uid: `${FIREBASE_AUTH.currentUser?.uid}`,
     sentenceId: sentenceId,
   };
 
