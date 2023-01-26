@@ -77,7 +77,7 @@ export default function MyPage() {
               key={Math.random()}
               onClick={() => {
                 router.push(
-                  `/typing/game?name=${sentenceObj.sentenceId}`,
+                  `/typing/game?sentenceId=${sentenceObj.sentenceId}`,
                   "/typing/game"
                 );
               }}
