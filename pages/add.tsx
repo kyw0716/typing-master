@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
 import Layout from "../src/components/layout";
+import useInput from "../src/lib/useInput";
 import { makeSentenceData } from "../src/lib/utils";
 
 const Style = {
@@ -63,7 +64,11 @@ const Style = {
 };
 
 export default function Add() {
-  const [title, setTitle] = useState<string>("");
+  const {
+    inputValue: title,
+    onChange: onChangeTitle,
+    resetInput: resetTitle,
+  } = useInput();
   const [content, setContent] = useState<string[]>([]);
   const [isTitleExist, setIsTitleExist] = useState<boolean>(false);
 
@@ -99,7 +104,7 @@ export default function Add() {
   };
 
   const handleAfterRequest = () => {
-    setTitle("");
+    resetTitle();
     setContent([]);
 
     if (textAreaRef.current)
@@ -119,9 +124,7 @@ export default function Add() {
           <Style.Input
             id="TITLE"
             placeholder="문장의 제목을 입력해주세요."
-            onChange={(event) => {
-              setTitle(event.target.value);
-            }}
+            onChange={onChangeTitle}
             value={title}
             ref={inputRef}
           />
