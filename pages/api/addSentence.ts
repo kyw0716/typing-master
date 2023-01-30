@@ -1,6 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { addSentenceToFirestore } from "../../src/lib/firebaseUtils";
 
+// request url: /api/addSentence
+// method: POST
+// request body:
+// {
+//   uid: 현재 로그인한 유저의 uid <string>,
+//   title: 제목 <string>,
+//   content: 문장 배열 <string[]>,
+//   sentenceId: 문장 고유 id <string>,
+// }
+// response: "success" | Error
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

@@ -1,5 +1,7 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { userContext } from "../../../../pages/_app";
 import TypingCalculator from "./TypingCalculator";
 
 const Style = {
@@ -49,9 +51,15 @@ const Style = {
 type Props = {
   sentenceArray: string[];
   typeAmount: number;
+  sentenceId: string;
 };
 
-export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
+export default function SentenceTyping({
+  sentenceArray,
+  typeAmount,
+  sentenceId,
+}: Props) {
+  const user = useContext(userContext);
   const [input, setInput] = useState<string>("");
   const [allTypeSpeed, setAllTypeSpeed] = useState<number[]>([]);
   const [allTypeAccuracy, setAllTypeAccuracy] = useState<number[]>([]);
@@ -68,6 +76,28 @@ export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
     setSentenceIndex((current) => current + 1);
   };
 
+  const addRecord = () => {
+    axios(`/api/record`, {
+      method: "post",
+      data: {
+        record: {
+          speed: Math.floor(
+            allTypeSpeed.reduce((curr, acc) => acc + curr, 0) /
+              allTypeSpeed.length
+          ),
+          accuracy: Math.floor(
+            allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
+              allTypeAccuracy.length
+          ),
+        },
+        sentenceId: sentenceId,
+        uid: user?.uid,
+      },
+    }).then(() => {
+      alert("기록이 완료되었습니다!");
+    });
+  };
+
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
@@ -78,6 +108,16 @@ export default function SentenceTyping({ sentenceArray, typeAmount }: Props) {
       setAllTypeSpeed(allTypeSpeed.slice(1, -1));
     }
   }, [allTypeAccuracy, allTypeSpeed]);
+
+  useEffect(() => {
+    if (sentenceIndex >= sentenceArray.length) {
+      if (user?.uid) {
+        return addRecord();
+      }
+      alert("기록을 남기고 싶다면 로그인하세요!");
+    }
+    /*eslint-disable*/
+  }, [sentenceIndex, sentenceArray, user]);
 
   return (
     <Style.Wrapper onSubmit={(event) => handleSubmit(event)}>

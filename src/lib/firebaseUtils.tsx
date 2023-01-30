@@ -1,6 +1,6 @@
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../Firebase";
-import { Sentence } from "../backend/dto";
+import { Record, Sentence } from "../backend/dto";
 
 export const getFirestoreDocData = async (document: string, field: string) => {
   const docRef = doc(FIREBASE_DB, document, field);
@@ -30,4 +30,23 @@ export const addSentenceToFirestore = async (
   await updateDoc(docRef, {
     content: arrayUnion(data),
   });
+};
+
+export const addRecordToFirestore = async (
+  record: Record,
+  sentenceId: string,
+  uid: string
+) => {
+  const docRef = doc(FIREBASE_DB, "record", sentenceId);
+  const prevRecord = await getFirestoreDocData("record", sentenceId);
+  const prevSpeed = Number(prevRecord[uid]?.speed);
+
+  if (prevSpeed < Number(record.speed) && Number(record.accuracy) >= 80)
+    await updateDoc(docRef, {
+      [uid]: record,
+    }).catch((e) => {
+      setDoc(docRef, {
+        [uid]: record,
+      });
+    });
 };

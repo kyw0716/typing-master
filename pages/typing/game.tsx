@@ -58,6 +58,7 @@ export default function TypingGame() {
           );
         })
         .catch((error) => alert(error));
+    /*eslint-disable*/
   }, []);
 
   return (
@@ -68,6 +69,7 @@ export default function TypingGame() {
             <SentenceTyping
               sentenceArray={sentenceArray}
               typeAmount={typeAmount}
+              sentenceId={`${router.query?.sentenceId}`}
             />
             <VirtualKeyboard setTypeAmount={setTypeAmount} />
           </>

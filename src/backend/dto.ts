@@ -7,9 +7,6 @@ export type Sentence = {
 };
 
 export type Record = {
-  title: string;
-  accuray: string;
   speed: string;
-  sentenceId: string;
-  uid: string;
+  accuracy: string;
 };
