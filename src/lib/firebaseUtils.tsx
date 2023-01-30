@@ -1,3 +1,4 @@
+import { isEmpty } from "@firebase/util";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../Firebase";
 import { Record, Sentence } from "../backend/dto";
@@ -41,12 +42,12 @@ export const addRecordToFirestore = async (
   const prevRecord = await getFirestoreDocData("record", sentenceId);
   const prevSpeed = Number(prevRecord[uid]?.speed);
 
+  if (isEmpty(prevRecord))
+    await setDoc(docRef, {
+      [uid]: record,
+    });
   if (prevSpeed < Number(record.speed) && Number(record.accuracy) >= 80)
     await updateDoc(docRef, {
       [uid]: record,
-    }).catch((e) => {
-      setDoc(docRef, {
-        [uid]: record,
-      });
     });
 };
