@@ -16,8 +16,11 @@ export default function App({ Component, pageProps }: AppProps) {
         setUserInfo(user);
         axios.post(`/api/user`, {
           uid: user.uid,
-          photoUrl: user.photoURL,
-          name: user.displayName,
+          info: {
+            uid: user.uid,
+            name: user.displayName,
+            photoUrl: user.photoURL,
+          },
         });
       } else {
         setUserInfo(null);
