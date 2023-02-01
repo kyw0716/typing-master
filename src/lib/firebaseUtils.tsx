@@ -29,6 +29,10 @@ export const addSentenceToFirestore = async (
 
   await updateDoc(docRef, {
     content: arrayUnion(data),
+  }).catch(async () => {
+    await setDoc(docRef, {
+      content: [data],
+    });
   });
 };
 
