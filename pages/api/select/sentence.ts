@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Sentence } from "../../../src/backend/dto";
 import { getFirestoreDocData } from "../../../src/lib/firebaseUtils";
 
-// request url: /api/select/api
+// request url: /api/select/sentence
 // method: GET
 // response:
 // {

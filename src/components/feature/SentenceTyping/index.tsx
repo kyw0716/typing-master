@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SetStateAction, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { userContext } from "../../../../pages/_app";
 import TypingCalculator from "./TypingCalculator";
@@ -77,23 +77,33 @@ export default function SentenceTyping({
   };
 
   const addRecord = () => {
+    const speed = Math.floor(
+      allTypeSpeed.reduce((curr, acc) => acc + curr, 0) / allTypeSpeed.length
+    );
+    const accuracy = Math.floor(
+      allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
+        allTypeAccuracy.length
+    );
+
     axios(`/api/record`, {
       method: "post",
       data: {
         record: {
-          speed: Math.floor(
-            allTypeSpeed.reduce((curr, acc) => acc + curr, 0) /
-              allTypeSpeed.length
-          ),
-          accuracy: Math.floor(
-            allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
-              allTypeAccuracy.length
-          ),
+          speed: speed,
+          accuracy: accuracy,
         },
         sentenceId: sentenceId,
         uid: user?.uid,
       },
-    }).then(() => {
+    }).then(async () => {
+      await axios.post("/api/user", {
+        uid: `${user?.uid}`,
+        newRecord: {
+          sentenceId: sentenceId,
+          speed: speed,
+          accuracy: accuracy,
+        },
+      });
       alert("기록이 완료되었습니다!");
     });
   };

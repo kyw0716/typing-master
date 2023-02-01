@@ -1,5 +1,4 @@
 export type Sentence = {
-  creator: string;
   title: string;
   content: string[];
   uid: string;
@@ -7,6 +6,12 @@ export type Sentence = {
 };
 
 export type Record = {
-  speed: string;
-  accuracy: string;
+  speed: number;
+  accuracy: number;
+};
+
+export type UserInfo = {
+  name: string;
+  uid: string;
+  photoUrl: string;
 };

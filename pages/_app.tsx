@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { FIREBASE_AUTH } from "../Firebase";
+import axios from "axios";
 
 export const userContext = createContext<User | null>(null);
 
@@ -13,6 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       if (user) {
         setUserInfo(user);
+        axios.post(`/api/user`, {
+          uid: user.uid,
+          photoUrl: user.photoURL,
+          name: user.displayName,
+        });
       } else {
         setUserInfo(null);
       }

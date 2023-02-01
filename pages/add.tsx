@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
 import Layout from "../src/components/layout";
 import useInput from "../src/lib/useInput";
 import { makeSentenceData } from "../src/lib/utils";
+import { userContext } from "./_app";
 
 const Style = {
   Wrapper: styled.form`
@@ -69,6 +70,9 @@ export default function Add() {
     onChange: onChangeTitle,
     resetInput: resetTitle,
   } = useInput();
+
+  const user = useContext(userContext);
+
   const [content, setContent] = useState<string[]>([]);
   const [isTitleExist, setIsTitleExist] = useState<boolean>(false);
 
@@ -87,14 +91,19 @@ export default function Add() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = makeSentenceData(title, content, v4());
+    const randomId = v4();
+    const data = makeSentenceData(title, content, randomId);
 
     if (content.length > 0)
       axios(`/api/addSentence`, {
         method: "POST",
         data: data,
       })
-        .then(() => {
+        .then(async () => {
+          await axios.post(`/api/user`, {
+            uid: user?.uid,
+            newOwnSentence: randomId,
+          });
           handleAfterRequest();
         })
         .catch((error) => {

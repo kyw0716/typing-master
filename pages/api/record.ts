@@ -37,6 +37,7 @@ import {
 //     uid: 현재 로그인한 유저 uid <string>,
 //     sentenceId: 문장 고유 id <string>
 // }
+// response: "success" | Error
 
 export default async function handler(
   req: NextApiRequest,
