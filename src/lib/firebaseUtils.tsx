@@ -47,15 +47,10 @@ export const addRecordToFirestore = async (
   // uid의 유저의 기록이 없을 때
   if (isEmpty(prevRecord[uid]))
     // sentenceId 문장에 다른 사람의 기록이 있으면 update, 아니면 set을 진행
-    await updateDoc(docRef, {
+    await setDoc(docRef, {
       [uid]: record,
-    }).catch(() =>
-      setDoc(docRef, {
-        [uid]: record,
-      })
-    );
-
-  if (prevSpeed < Number(record.speed) && Number(record.accuracy) >= 80)
+    });
+  else if (prevSpeed < Number(record.speed) && Number(record.accuracy) >= 80)
     await updateDoc(docRef, {
       [uid]: record,
     });
