@@ -91,6 +91,9 @@ export default function Add() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!user?.uid) return alert("로그인 후 등록이 가능합니다!");
+
     const randomId = v4();
     const data = makeSentenceData(title, content, randomId);
 
@@ -98,17 +101,13 @@ export default function Add() {
       axios(`/api/addSentence`, {
         method: "POST",
         data: data,
-      })
-        .then(async () => {
-          await axios.post(`/api/user`, {
-            uid: user?.uid,
-            sentenceId: randomId,
-          });
-          handleAfterRequest();
-        })
-        .catch((error) => {
-          alert(error.response.data);
+      }).then(async () => {
+        await axios.post(`/api/user`, {
+          uid: user?.uid,
+          sentenceId: randomId,
         });
+        handleAfterRequest();
+      });
     if (title.length > 0) setIsTitleExist(true);
   };
 
