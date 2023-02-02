@@ -98,7 +98,7 @@ export default function SentenceTyping({
     }).then(async () => {
       await axios.post("/api/user", {
         uid: `${user?.uid}`,
-        newRecord: {
+        record: {
           sentenceId: sentenceId,
           speed: speed,
           accuracy: accuracy,

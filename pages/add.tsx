@@ -102,7 +102,7 @@ export default function Add() {
         .then(async () => {
           await axios.post(`/api/user`, {
             uid: user?.uid,
-            newOwnSentence: randomId,
+            sentenceId: randomId,
           });
           handleAfterRequest();
         })

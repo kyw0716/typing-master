@@ -24,7 +24,31 @@ import {
 // }[]>,
 
 // method: POST
-// request body:
+// 사용자 정보 업데이트 기능
+// request body: {
+//   uid: 현재 로그인한 사용자 uid <string>,
+//   info: {
+//     name: 이름 <string>,
+//     photoUrl: 프로필 사진 url <string>,
+//     email: 이메일 <string>
+//   }
+// }
+//
+// 사용자 기록 등록 기능
+// request body: {
+//   uid: 현재 로그인한 사용자 uid <string>,
+//   record: {
+//     sentenceId: 완료한 문장의 id <string>,
+//     speed: 평균 속도 <number>,
+//     accuracy: 평균 정확도 <number>
+//   }
+// }
+//
+// 사용자가 등록한 문장 업데이트 기능
+// request body: {
+//   uid: 현재 로그인한 사용자 uid <string>,
+//   sentenceId: 등록한 문장 id <string>,
+// }
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,12 +62,12 @@ export default async function handler(
   }
   if (req.method === "POST") {
     const info: UserInfo | undefined = req.body?.info;
-    const newOwnSentence: string | undefined = req.body?.newOwnSentence;
-    const newRecord: (Record & { sentenceId: string }) | undefined =
-      req.body?.newRecord;
+    const sentenceId: string | undefined = req.body?.sentenceId;
+    const record: (Record & { sentenceId: string }) | undefined =
+      req.body?.record;
 
     if (info)
-      return addUserInfoToFirestore(info)
+      return addUserInfoToFirestore(info, uid)
         .then(() => {
           res.status(200).json("success");
         })
@@ -51,8 +75,8 @@ export default async function handler(
           res.status(500).json(error);
         });
 
-    if (newOwnSentence)
-      return addNewOwnSentenceForUserToFirestore(newOwnSentence, uid)
+    if (sentenceId)
+      return addNewOwnSentenceForUserToFirestore(sentenceId, uid)
         .then(() => {
           res.status(200).json("success");
         })
@@ -60,8 +84,8 @@ export default async function handler(
           res.status(500).json(error);
         });
 
-    if (newRecord)
-      return addRecordForUserToFirestore(newRecord, uid)
+    if (record)
+      return addRecordForUserToFirestore(record, uid)
         .then(() => {
           res.status(200).json("success");
         })

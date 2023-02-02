@@ -2,7 +2,6 @@ import { isEmpty } from "@firebase/util";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../Firebase";
 import { Record, Sentence, UserInfo } from "../backend/dto";
-import { undefinedConverter } from "./utils";
 
 export const getFirestoreDocData = async (document: string, field: string) => {
   const docRef = doc(FIREBASE_DB, document, field);
@@ -62,14 +61,13 @@ export const addRecordToFirestore = async (
     });
 };
 
-export const addUserInfoToFirestore = async (info: UserInfo) => {
-  const docRef = doc(FIREBASE_DB, "user", info.uid);
-  const userData = await getFirestoreDocData("user", info.uid);
+export const addUserInfoToFirestore = async (info: UserInfo, uid: string) => {
+  const docRef = doc(FIREBASE_DB, uid, "info");
 
   await setDoc(docRef, {
-    info: info,
-    ownSentence: undefinedConverter(userData.ownSentence),
-    completeSentence: undefinedConverter(userData.completeSentence),
+    name: info.name,
+    photoUrl: info.photoUrl,
+    email: info.email,
   });
 };
 
@@ -77,54 +75,40 @@ export const addRecordForUserToFirestore = async (
   record: Record & { sentenceId: string },
   uid: string
 ) => {
-  const docRef = doc(FIREBASE_DB, "user", uid);
-  const userData = await getFirestoreDocData("user", uid);
+  const docRef = doc(FIREBASE_DB, uid, "completeSentence");
+  const prevRecord = await getFirestoreDocData(uid, "completeSentence");
 
-  const prevRecord: (Record & { sentenceId: string })[] | undefined =
-    userData?.completeSentence;
-
-  if (prevRecord) {
-    const prevSpeed = prevRecord.filter(
-      (prev) => prev.sentenceId === record.sentenceId
-    )[0]["speed"];
-    if (prevSpeed > record.speed) return;
-
+  if (
+    prevRecord[record.sentenceId] &&
+    prevRecord[record.sentenceId]["speed"] > record.speed
+  )
+    return;
+  return updateDoc(docRef, {
+    [record.sentenceId]: {
+      speed: record.speed,
+      accuracy: record.accuracy,
+    },
+  }).catch(async () => {
     await setDoc(docRef, {
-      info: undefinedConverter(userData.info),
-      ownSentence: undefinedConverter(userData.ownSentence),
-      completeSentence: [
-        ...prevRecord.filter((prevR) => {
-          return prevR.sentenceId !== record.sentenceId;
-        }),
-        record,
-      ],
+      [record.sentenceId]: {
+        speed: record.speed,
+        accuracy: record.accuracy,
+      },
     });
-  } else
-    await setDoc(docRef, {
-      info: undefinedConverter(userData.info),
-      ownSentence: undefinedConverter(userData.ownSentence),
-      completeSentence: [record],
-    });
+  });
 };
 
 export const addNewOwnSentenceForUserToFirestore = async (
-  sentence: string,
+  sentenceId: string,
   uid: string
 ) => {
-  const docRef = doc(FIREBASE_DB, "user", uid);
-  const userData = await getFirestoreDocData("user", uid);
-  const prevOwn: string[] | undefined = userData.ownSentence;
+  const docRef = doc(FIREBASE_DB, uid, "ownSentence");
 
-  if (prevOwn)
+  await updateDoc(docRef, {
+    sentenceId: arrayUnion(sentenceId),
+  }).catch(async () => {
     await setDoc(docRef, {
-      info: undefinedConverter(userData.info),
-      ownSentence: [...prevOwn, sentence],
-      completeSentence: undefinedConverter(userData.completeSentence),
+      sentenceId: [sentenceId],
     });
-  else
-    await setDoc(docRef, {
-      info: undefinedConverter(userData.info),
-      ownSentence: [sentence],
-      completeSentence: undefinedConverter(userData.completeSentence),
-    });
+  });
 };

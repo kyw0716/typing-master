@@ -12,6 +12,6 @@ export type Record = {
 
 export type UserInfo = {
   name: string;
-  uid: string;
   photoUrl: string;
+  email: string;
 };

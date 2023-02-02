@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
         axios.post(`/api/user`, {
           uid: user.uid,
           info: {
-            uid: user.uid,
+            email: user.email,
             name: user.displayName,
             photoUrl: user.photoURL,
           },

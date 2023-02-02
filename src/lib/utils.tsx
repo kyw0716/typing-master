@@ -15,8 +15,3 @@ export const makeSentenceData = (
 
   return data;
 };
-
-export const undefinedConverter = (data: any) => {
-  if (data === undefined) return [];
-  return data;
-};
