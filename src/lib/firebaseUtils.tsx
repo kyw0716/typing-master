@@ -50,7 +50,7 @@ export const addRecordToFirestore = async (
       [uid]: record,
     });
   // sentenceId 문장에 다른 사람의 기록이 존재하는데 내 기록이 없을 때
-  if (isEmpty(prevRecord))
+  if (isEmpty(prevRecord[uid]))
     return await updateDoc(docRef, {
       [uid]: record,
     });
