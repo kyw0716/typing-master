@@ -24,16 +24,16 @@ type Props = {
   answer: string;
   input: string;
   typeAmount: number;
-  setAllTypeSpeed: React.Dispatch<SetStateAction<number[]>>;
-  setAllTypeAccuracy: React.Dispatch<SetStateAction<number[]>>;
+  handleAllTypeRecord: (speed: number, accuracy: number) => void;
+  sentenceIndex: number;
 };
 
 export default function TypingCalculator({
   answer,
   input,
   typeAmount,
-  setAllTypeSpeed,
-  setAllTypeAccuracy,
+  handleAllTypeRecord,
+  sentenceIndex,
 }: Props) {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [typeSpeed, setTypeSpeed] = useState<number>(0);
@@ -58,14 +58,15 @@ export default function TypingCalculator({
         }, 1000)
       );
     } else clearInterval(interv);
+    /*eslint-disable-next-line*/
   }, [isTypingStart]);
 
   useEffect(() => {
     setCurrentTime(0);
 
-    setAllTypeSpeed((current) => [...current, typeSpeed]);
-    setAllTypeAccuracy((current) => [...current, typeAccuracy]);
-  }, [answer]);
+    handleAllTypeRecord(typeSpeed, typeAccuracy);
+    /*eslint-disable-next-line*/
+  }, [sentenceIndex]);
 
   useEffect(() => {
     if (currentTime !== 0 && typeAmount !== 0)
@@ -81,6 +82,7 @@ export default function TypingCalculator({
             100
         )
       );
+    /*eslint-disable-next-line*/
   }, [input]);
 
   return (

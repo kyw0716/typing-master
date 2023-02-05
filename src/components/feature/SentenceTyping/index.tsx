@@ -80,13 +80,15 @@ const recordReducer = (
       if (action.input !== undefined)
         return {
           ...recordValues,
-          input: recordValues.input,
+          input: action.input,
         };
     case "typeSpeed":
       if (action.typeSpeed !== undefined)
         return {
           ...recordValues,
-          allTypeSpeed: [...recordValues.allTypeSpeed, action.typeSpeed],
+          allTypeSpeed: [...recordValues.allTypeSpeed, action.typeSpeed].filter(
+            (v, i) => !(v === 0 && i === 0)
+          ),
         };
     case "typeAccuracy":
       if (action.typeAccuracy !== undefined)
@@ -95,7 +97,7 @@ const recordReducer = (
           allTypeAccuracy: [
             ...recordValues.allTypeAccuracy,
             action.typeAccuracy,
-          ],
+          ].filter((v, i) => !(v === 0 && i === 0)),
         };
     case "sentenceIndex":
       if (action.sentenceIndex !== undefined)
@@ -141,37 +143,41 @@ export default function SentenceTyping({
     initialValue
   );
 
-  const [input, setInput] = useState<string>("");
-  const [allTypeSpeed, setAllTypeSpeed] = useState<number[]>([]);
-  const [allTypeAccuracy, setAllTypeAccuracy] = useState<number[]>([]);
-  const [sentenceIndex, setSentenceIndex] = useState<number>(0);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (input.length === 0) return;
+    if (recordValues.input.length === 0) return;
 
-    setInput("");
-    setSentenceIndex((current) => current + 1);
+    recordValuesDispatch({
+      type: "input",
+      input: "",
+    });
+    recordValuesDispatch({
+      type: "sentenceIndex",
+      sentenceIndex: recordValues.sentenceIndex + 1,
+    });
+  };
+
+  const handleAllTypeRecord = (speed: number, accuracy: number) => {
+    recordValuesDispatch({
+      type: "typeSpeed",
+      typeSpeed: speed,
+    });
+    recordValuesDispatch({
+      type: "typeAccuracy",
+      typeAccuracy: accuracy,
+    });
   };
 
   const addRecord = () => {
-    const speed = Math.floor(
-      allTypeSpeed.reduce((curr, acc) => acc + curr, 0) / allTypeSpeed.length
-    );
-    const accuracy = Math.floor(
-      allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
-        allTypeAccuracy.length
-    );
-
     axios(`/api/record`, {
       method: "post",
       data: {
         record: {
-          speed: speed,
-          accuracy: accuracy,
+          speed: recordValues.typeSpeedResult,
+          accuracy: recordValues.typeAccuracyResult,
         },
         sentenceId: sentenceId,
         uid: user?.uid,
@@ -181,8 +187,8 @@ export default function SentenceTyping({
         uid: `${user?.uid}`,
         record: {
           sentenceId: sentenceId,
-          speed: speed,
-          accuracy: accuracy,
+          speed: recordValues.typeSpeedResult,
+          accuracy: recordValues.typeAccuracyResult,
         },
       });
       alert("기록이 완료되었습니다!");
@@ -194,40 +200,39 @@ export default function SentenceTyping({
   }, []);
 
   useEffect(() => {
-    if (allTypeAccuracy[0] === 0 && allTypeSpeed[0] === 0) {
-      setAllTypeAccuracy(allTypeAccuracy.slice(1, -1));
-      setAllTypeSpeed(allTypeSpeed.slice(1, -1));
-    }
-  }, [allTypeAccuracy, allTypeSpeed]);
-
-  useEffect(() => {
-    if (sentenceIndex >= sentenceArray.length) {
+    if (recordValues.sentenceIndex >= sentenceArray.length) {
+      recordValuesDispatch({
+        type: "cacluate-record",
+      });
       if (user?.uid) {
         return addRecord();
       }
       alert("기록을 남기고 싶다면 로그인하세요!");
     }
     /*eslint-disable*/
-  }, [sentenceIndex, sentenceArray, user]);
+  }, [recordValues.sentenceIndex, sentenceArray, user]);
 
   return (
     <Style.Wrapper onSubmit={(event) => handleSubmit(event)}>
-      {sentenceIndex < sentenceArray.length ? (
+      {recordValues.sentenceIndex < sentenceArray.length ? (
         <>
           <TypingCalculator
-            answer={sentenceArray[sentenceIndex]}
-            input={input}
+            answer={sentenceArray[recordValues.sentenceIndex]}
+            input={recordValues.input}
             typeAmount={typeAmount}
-            setAllTypeSpeed={setAllTypeSpeed}
-            setAllTypeAccuracy={setAllTypeAccuracy}
+            handleAllTypeRecord={handleAllTypeRecord}
+            sentenceIndex={recordValues.sentenceIndex}
           />
           <Style.SentenceWrapper>
-            {sentenceArray[sentenceIndex]}
+            {sentenceArray[recordValues.sentenceIndex]}
           </Style.SentenceWrapper>
           <Style.Input
-            value={input}
+            value={recordValues.input}
             onChange={(event) => {
-              setInput(event.target.value);
+              recordValuesDispatch({
+                type: "input",
+                input: event.target.value,
+              });
             }}
             ref={inputRef}
           />
@@ -235,19 +240,10 @@ export default function SentenceTyping({
       ) : (
         <Style.ResultWrapper>
           <Style.ResultViewer>
-            평균 속도:{" "}
-            {Math.floor(
-              allTypeSpeed.reduce((curr, acc) => acc + curr, 0) /
-                allTypeSpeed.length
-            )}
+            평균 속도: {recordValues.typeSpeedResult}
           </Style.ResultViewer>
           <Style.ResultViewer>
-            평균 정확도:{" "}
-            {Math.floor(
-              allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
-                allTypeAccuracy.length
-            )}
-            %
+            평균 정확도: {recordValues.allTypeAccuracy}%
           </Style.ResultViewer>
         </Style.ResultWrapper>
       )}
