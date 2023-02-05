@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import styled from "styled-components";
 import { userContext } from "../../../../pages/_app";
 import TypingCalculator from "./TypingCalculator";
@@ -54,12 +54,93 @@ type Props = {
   sentenceId: string;
 };
 
+type RecordValues = {
+  input: string;
+  allTypeSpeed: number[];
+  allTypeAccuracy: number[];
+  sentenceIndex: number;
+  typeSpeedResult: number;
+  typeAccuracyResult: number;
+};
+
+type RecordAction = {
+  type: string;
+  input?: string;
+  typeSpeed?: number;
+  typeAccuracy?: number;
+  sentenceIndex?: number;
+};
+
+const recordReducer = (
+  recordValues: RecordValues,
+  action: RecordAction
+): RecordValues => {
+  switch (action.type) {
+    case "input":
+      if (action.input !== undefined)
+        return {
+          ...recordValues,
+          input: recordValues.input,
+        };
+    case "typeSpeed":
+      if (action.typeSpeed !== undefined)
+        return {
+          ...recordValues,
+          allTypeSpeed: [...recordValues.allTypeSpeed, action.typeSpeed],
+        };
+    case "typeAccuracy":
+      if (action.typeAccuracy !== undefined)
+        return {
+          ...recordValues,
+          allTypeAccuracy: [
+            ...recordValues.allTypeAccuracy,
+            action.typeAccuracy,
+          ],
+        };
+    case "sentenceIndex":
+      if (action.sentenceIndex !== undefined)
+        return {
+          ...recordValues,
+          sentenceIndex: action.sentenceIndex,
+        };
+    case "cacluate-record":
+      return {
+        ...recordValues,
+        typeSpeedResult: Math.floor(
+          recordValues.allTypeSpeed.reduce((curr, acc) => acc + curr, 0) /
+            recordValues.allTypeSpeed.length
+        ),
+        typeAccuracyResult: Math.floor(
+          recordValues.allTypeAccuracy.reduce((curr, acc) => acc + curr, 0) /
+            recordValues.allTypeAccuracy.length
+        ),
+      };
+  }
+  return recordValues;
+};
+
+const initialValue = {
+  input: "",
+  allTypeSpeed: [],
+  allTypeAccuracy: [],
+  sentenceIndex: 0,
+  typeSpeedResult: 0,
+  typeAccuracyResult: 0,
+};
+
 export default function SentenceTyping({
   sentenceArray,
   typeAmount,
   sentenceId,
 }: Props) {
   const user = useContext(userContext);
+
+  // TODO: useReducer 완성하기
+  const [recordValues, recordValuesDispatch] = useReducer(
+    recordReducer,
+    initialValue
+  );
+
   const [input, setInput] = useState<string>("");
   const [allTypeSpeed, setAllTypeSpeed] = useState<number[]>([]);
   const [allTypeAccuracy, setAllTypeAccuracy] = useState<number[]>([]);
